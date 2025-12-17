@@ -1,4 +1,4 @@
-import 'package:custom_aod/app/data/settings_services.dart';
+import 'package:custom_aod/app/services/settings_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

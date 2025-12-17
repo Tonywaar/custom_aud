@@ -1,11 +1,8 @@
-import 'package:custom_aod/app/data/settings_services.dart';
+import 'package:custom_aod/app/services/settings_services.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
-import '../controllers/settings_controller.dart';
-
-class SettingsView extends GetView<SettingsController> {
+class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
 
   @override

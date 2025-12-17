@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:animated_flip_counter/animated_flip_counter.dart';
-import 'package:custom_aod/app/data/settings_services.dart';
+import 'package:custom_aod/app/services/settings_services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class HomeView extends StatefulWidget {
