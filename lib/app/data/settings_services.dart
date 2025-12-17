@@ -1,22 +1,44 @@
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-class AppSettings {
-  final bool isBorders;
-  final bool withSeconds;
+final settings = AppSettings().obs;
 
-  AppSettings({this.isBorders = false, this.withSeconds = false});
+class AppSettings {
+  bool isBorderedHours;
+  bool isBorderedMinutes;
+  bool isBorderedSeconds;
+  bool withSeconds;
+  double clockOpacity;
+  double clockSize;
+
+  AppSettings({
+    this.isBorderedHours = false,
+    this.isBorderedMinutes = false,
+    this.isBorderedSeconds = false,
+    this.withSeconds = false,
+    this.clockOpacity = 80,
+    this.clockSize = 80,
+  });
 
   factory AppSettings.fromJson(Map<String, dynamic> json) {
     return AppSettings(
-      isBorders: json['isBorders'] ?? false,
+      isBorderedHours: json['isBorderedHours'] ?? false,
+      isBorderedMinutes: json['isBorderedMinutes'] ?? false,
+      isBorderedSeconds: json['isBorderedSeconds'] ?? false,
       withSeconds: json['withSeconds'] ?? false,
+      clockOpacity: json['clockOpacity'] ?? 80,
+      clockSize: json['clockSize'] ?? 80,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'isBorders': isBorders,
+      'isBorderedHours': isBorderedHours,
+      'isBorderedMinutes': isBorderedMinutes,
+      'isBorderedSeconds': isBorderedSeconds,
       'withSeconds': withSeconds,
+      'clockOpacity': clockOpacity,
+      'clockSize': clockSize,
     };
   }
 }

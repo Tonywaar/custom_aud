@@ -1,3 +1,4 @@
+import 'package:custom_aod/app/data/settings_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ Future<void> main() async {
   // Initialize storage
   await GetStorage.init();
 
+  settings.value = SettingsService.load();
   // Hide all system UI
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
@@ -36,14 +38,16 @@ Future<void> main() async {
         fontFamily: 'Cairo',
         cardTheme: CardThemeData(
           elevation: 0,
-          color: Colors.grey[850],
+          color: Colors.grey[900],
           surfaceTintColor: Colors.transparent,
+          margin: EdgeInsets.all(15),
         ),
         appBarTheme: const AppBarTheme(
           scrolledUnderElevation: 0,
           color: Colors.transparent,
           foregroundColor: Colors.white,
         ),
+        dividerColor: Colors.grey[700],
         textTheme: const TextTheme(
           displayLarge: TextStyle(color: Colors.white),
           displayMedium: TextStyle(color: Colors.white),

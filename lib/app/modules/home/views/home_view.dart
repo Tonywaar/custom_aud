@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:custom_aod/app/data/settings_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -37,59 +40,104 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.black,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedFlipCounter(
-                value: _currentTimeH,
-                prefix: _currentTimeH < 10 ? "0" : "",
-                textStyle: TextStyle(
-                  color: Colors.white54.withValues(alpha: .0),
-                  fontSize: 65,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 5,
-                  height: 1.3,
-                  shadows: [
-                    // Shadow(color: Colors.white54.withValues(alpha: .01), blurRadius: 1.0, offset: Offset(01, 01)),
-                    // Shadow(color: Colors.white54.withValues(alpha: .01), blurRadius: 1.0, offset: Offset(-01, -01)),
-                    Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: Offset(0, -1)),
-                    Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: Offset(0, 1)),
-                    Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: Offset(1, 0)),
-                    Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: Offset(-1, 0)),
-                    Shadow(color: Colors.black, blurRadius: .20, offset: Offset(0, 0)),
+      body: Stack(
+        children: [
+          Opacity(
+            opacity: settings.value.clockOpacity / 100,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.black,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedFlipCounter(
+                      value: _currentTimeH,
+                      prefix: _currentTimeH < 10 ? "0" : "",
+                      textStyle: TextStyle(
+                        color: Colors.white54.withValues(alpha: settings.value.isBorderedHours ? .0 : .50),
+                        fontSize: settings.value.clockSize,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 5,
+                        height: 1.3,
+                        shadows: settings.value.isBorderedHours
+                            ? [
+                                // Shadow(color: Colors.white54.withValues(alpha: .01), blurRadius: 1.0, offset: Offset(01, 01)),
+                                // Shadow(color: Colors.white54.withValues(alpha: .01), blurRadius: 1.0, offset: Offset(-01, -01)),
+                                Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(0, -1)),
+                                Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(0, 1)),
+                                Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(1, 0)),
+                                Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(-1, 0)),
+                                const Shadow(color: Colors.black, blurRadius: .20, offset: Offset(0, 0)),
+                              ]
+                            : [],
+                      ),
+                    ),
+                    AnimatedFlipCounter(
+                      value: _currentTimeM,
+                      prefix: _currentTimeM < 10 ? "0" : "",
+                      textStyle: TextStyle(
+                        color: Colors.white54.withValues(alpha: settings.value.isBorderedMinutes ? .0 : .50),
+                        fontSize: settings.value.clockSize,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 5,
+                        height: 1.3,
+                        shadows: settings.value.isBorderedMinutes
+                            ? [
+                                // Shadow(color: Colors.white54.withValues(alpha: .01), blurRadius: 1.0, offset: Offset(01, 01)),
+                                // Shadow(color: Colors.white54.withValues(alpha: .01), blurRadius: 1.0, offset: Offset(-01, -01)),
+                                Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(0, -1)),
+                                Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(0, 1)),
+                                Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(1, 0)),
+                                Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(-1, 0)),
+                                const Shadow(color: Colors.black, blurRadius: .20, offset: Offset(0, 0)),
+                              ]
+                            : [],
+                      ),
+                    ),
+                    Obx(() {
+                      return Visibility(
+                        visible: settings.value.withSeconds,
+                        child: AnimatedFlipCounter(
+                          value: _currentTimeS,
+                          prefix: _currentTimeS < 10 ? "0" : "",
+                          textStyle: TextStyle(
+                            color: Colors.white54.withValues(alpha: settings.value.isBorderedSeconds ? .0 : .50),
+                            fontSize: settings.value.clockSize,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 5,
+                            height: 1.3,
+                            shadows: settings.value.isBorderedSeconds
+                                ? [
+                                    // Shadow(color: Colors.white54.withValues(alpha: .01), blurRadius: 1.0, offset: Offset(01, 01)),
+                                    // Shadow(color: Colors.white54.withValues(alpha: .01), blurRadius: 1.0, offset: Offset(-01, -01)),
+                                    Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(0, -1)),
+                                    Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(0, 1)),
+                                    Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(1, 0)),
+                                    Shadow(color: Colors.white54.withValues(alpha: .25), blurRadius: .5, offset: const Offset(-1, 0)),
+                                    const Shadow(color: Colors.black, blurRadius: .20, offset: Offset(0, 0)),
+                                  ]
+                                : [],
+                          ),
+                        ),
+                      );
+                    }),
                   ],
                 ),
               ),
-              AnimatedFlipCounter(
-                value: _currentTimeM,
-                prefix: _currentTimeM < 10 ? "0" : "",
-                textStyle: TextStyle(
-                  color: Colors.white54.withValues(alpha: .25),
-                  fontSize: 65,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 5,
-                  height: 1.3,
-                ),
-              ),
-              AnimatedFlipCounter(
-                value: _currentTimeS,
-                prefix: _currentTimeS < 10 ? "0" : "",
-                textStyle: TextStyle(
-                  color: Colors.white54.withValues(alpha: .25),
-                  fontSize: 65,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 5,
-                  height: 1.3,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          IconButton(
+            onPressed: () {
+              Get.toNamed("/settings");
+            },
+            icon: const Icon(
+              Icons.settings_outlined,
+              color: Colors.white10,
+            ),
+          ),
+        ],
       ),
     );
   }
