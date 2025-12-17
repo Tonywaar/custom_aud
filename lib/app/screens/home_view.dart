@@ -16,12 +16,11 @@ class _HomeViewState extends State<HomeView> {
   int _currentTimeH = 0;
   int _currentTimeM = 0;
   int _currentTimeS = 0;
-  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       _updateTime();
     });
   }
