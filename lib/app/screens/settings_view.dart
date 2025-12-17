@@ -13,7 +13,8 @@ class SettingsView extends StatelessWidget {
           title: const Text('Settings'),
           centerTitle: true,
         ),
-        body: Column(
+        body: ListView(
+          padding: EdgeInsets.zero,
           // spacing: 5,
           children: [
             Card(
@@ -189,6 +190,69 @@ class SettingsView extends StatelessWidget {
                           SettingsService.save(settings.value);
                           settings.refresh();
                         },
+                      );
+                    }),
+                  ],
+                ),
+              ).paddingAll(15),
+            ),
+            Card(
+              child: SizedBox(
+                width: Get.width,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Save the OLED screen',
+                            style: context.textTheme.titleMedium,
+                          ),
+                        ),
+                        Obx(() {
+                          return Switch(
+                            value: settings.value.saveOled,
+                            activeThumbColor: Colors.red,
+                            onChanged: (value) {
+                              settings.value.saveOled = !settings.value.saveOled;
+                              SettingsService.save(settings.value);
+                              settings.refresh();
+                            },
+                          );
+                        })
+                      ],
+                    ),
+                    Obx(() {
+                      return Visibility(
+                        visible: settings.value.saveOled,
+                        child: Column(
+                          children: [
+                            Divider(
+                              color: Colors.grey[700],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Over protect the OLED screen',
+                                    style: context.textTheme.titleMedium,
+                                  ),
+                                ),
+                                Obx(() {
+                                  return Switch(
+                                    value: settings.value.overProtect,
+                                    activeThumbColor: Colors.red,
+                                    onChanged: (value) {
+                                      settings.value.overProtect = !settings.value.overProtect;
+                                      SettingsService.save(settings.value);
+                                      settings.refresh();
+                                    },
+                                  );
+                                })
+                              ],
+                            ),
+                          ],
+                        ),
                       );
                     }),
                   ],

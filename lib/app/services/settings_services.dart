@@ -8,6 +8,8 @@ class AppSettings {
   bool isBorderedMinutes;
   bool isBorderedSeconds;
   bool withSeconds;
+  bool saveOled;
+  bool overProtect;
   double clockOpacity;
   double clockSize;
 
@@ -16,6 +18,8 @@ class AppSettings {
     this.isBorderedMinutes = false,
     this.isBorderedSeconds = false,
     this.withSeconds = false,
+    this.saveOled = true,
+    this.overProtect = false,
     this.clockOpacity = 80,
     this.clockSize = 80,
   });
@@ -26,6 +30,8 @@ class AppSettings {
       isBorderedMinutes: json['isBorderedMinutes'] ?? false,
       isBorderedSeconds: json['isBorderedSeconds'] ?? false,
       withSeconds: json['withSeconds'] ?? false,
+      saveOled: json['saveOled'] ?? true,
+      overProtect: json['overProtect'] ?? false,
       clockOpacity: json['clockOpacity'] ?? 80,
       clockSize: json['clockSize'] ?? 80,
     );
@@ -37,6 +43,8 @@ class AppSettings {
       'isBorderedMinutes': isBorderedMinutes,
       'isBorderedSeconds': isBorderedSeconds,
       'withSeconds': withSeconds,
+      'saveOled': saveOled,
+      'overProtect': overProtect,
       'clockOpacity': clockOpacity,
       'clockSize': clockSize,
     };
