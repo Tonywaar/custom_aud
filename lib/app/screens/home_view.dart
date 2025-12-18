@@ -36,6 +36,9 @@ class _HomeViewState extends State<HomeView> {
       _updateTime();
     });
     _startHideTimer();
+    if (settings.value.showBattery) {
+      _updateBatteryInfo();
+    }
   }
 
   void _startHideTimer() {
@@ -89,8 +92,7 @@ class _HomeViewState extends State<HomeView> {
       _currentTimeH = hour12;
       _currentTimeM = now.minute;
       _currentTimeS = now.second;
-
-      if (now.second % 15 == 0) {
+      if (settings.value.showBattery && now.second % 15 == 0) {
         _updateBatteryInfo();
       }
     });
@@ -126,6 +128,7 @@ class _HomeViewState extends State<HomeView> {
                               color: Colors.white54.withValues(alpha: settings.value.isBorderedHours ? .0 : .50),
                               fontSize: settings.value.clockSize,
                               fontWeight: FontWeight.bold,
+                              fontFamily: settings.value.useGoogleFont ? "Product" : "Cairo",
                               letterSpacing: 5,
                               height: 1.3,
                               shadows: settings.value.isBorderedHours
@@ -146,6 +149,7 @@ class _HomeViewState extends State<HomeView> {
                               color: Colors.white54.withValues(alpha: settings.value.isBorderedMinutes ? .0 : .50),
                               fontSize: settings.value.clockSize,
                               fontWeight: FontWeight.bold,
+                              fontFamily: settings.value.useGoogleFont ? "Product" : "Cairo",
                               letterSpacing: 5,
                               height: 1.3,
                               shadows: settings.value.isBorderedMinutes
@@ -168,6 +172,7 @@ class _HomeViewState extends State<HomeView> {
                                 textStyle: TextStyle(
                                   color: Colors.white54.withValues(alpha: settings.value.isBorderedSeconds ? .0 : .50),
                                   fontSize: settings.value.clockSize,
+                                  fontFamily: settings.value.useGoogleFont ? "Product" : "Cairo",
                                   fontWeight: FontWeight.bold,
                                   letterSpacing: 5,
                                   height: 1.3,
@@ -184,17 +189,55 @@ class _HomeViewState extends State<HomeView> {
                               ),
                             );
                           }),
-                          if (batteryPercentage > 0)
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                if (isCharging) const Icon(CupertinoIcons.bolt, size: 10, color: Colors.white54),
-                                Text(
-                                  "${(batteryPercentage * 100).toStringAsFixed(0)}%",
-                                  style: context.textTheme.bodySmall?.copyWith(color: Colors.white54),
-                                ),
-                              ],
+                          if (settings.value.showBattery && batteryPercentage > 0)
+                            Container(
+                              width: 45,
+                              height: 20,
+                              // padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                              decoration: settings.value.showBatteryIcon
+                                  ? BoxDecoration(
+                                      color: Colors.white12,
+                                      borderRadius: BorderRadius.circular(100),
+                                      border: Border.all(color: Colors.white12, width: 3, strokeAlign: BorderSide.strokeAlignOutside),
+                                    )
+                                  : null,
+                              margin: const EdgeInsets.only(top: 10),
+                              child: Stack(
+                                children: [
+                                  if (settings.value.showBatteryIcon)
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 45 * batteryPercentage,
+                                            height: Get.height,
+                                            color: Colors.white24,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  Align(
+                                    alignment: AlignmentGeometry.center,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        if (!isCharging)
+                                          Icon(CupertinoIcons.bolt_fill,
+                                              size: 10, color: settings.value.showBatteryIcon ? Colors.black87 : Colors.white54),
+                                        Text(
+                                          "${(batteryPercentage * 100).toStringAsFixed(0)}%",
+                                          style: context.textTheme.bodySmall?.copyWith(
+                                              fontFamily: settings.value.useGoogleFont ? "Product" : "Cairo",
+                                              color: settings.value.showBatteryIcon ? Colors.black87 : Colors.white54,
+                                              fontWeight: settings.value.showBatteryIcon ? FontWeight.bold : FontWeight.normal),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                         ],
                       ),

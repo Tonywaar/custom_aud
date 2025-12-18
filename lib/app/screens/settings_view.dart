@@ -13,13 +13,13 @@ class SettingsView extends StatelessWidget {
         body: CustomScrollView(slivers: <Widget>[
           SliverAppBar(
             expandedHeight: 250.0,
-            leading: SizedBox(),
+            leading: const SizedBox(),
             backgroundColor: Colors.black,
             flexibleSpace: FlexibleSpaceBar(
               title: Row(
                 children: [
-                  IconButton(onPressed: () => Get.back(), icon: Icon(CupertinoIcons.back)),
-                  Text("Settings"),
+                  IconButton(onPressed: () => Get.back(), icon: const Icon(CupertinoIcons.back)),
+                  const Text("Settings"),
                 ],
               ),
               titlePadding: const EdgeInsetsDirectional.only(start: 0.0, bottom: 20.0),
@@ -29,10 +29,33 @@ class SettingsView extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: Column(
-              // padding: EdgeInsets.zero,
-              // shrinkWrap: true,
-              // physics: const NeverScrollableScrollPhysics(),
               children: [
+                Card(
+                  child: SizedBox(
+                    width: Get.width,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Use Google Font',
+                            style: context.textTheme.titleMedium,
+                          ),
+                        ),
+                        Obx(() {
+                          return Switch(
+                            value: settings.value.useGoogleFont,
+                            activeThumbColor: Colors.red,
+                            onChanged: (value) {
+                              settings.value.useGoogleFont = !settings.value.useGoogleFont;
+                              SettingsService.save(settings.value);
+                              settings.refresh();
+                            },
+                          );
+                        })
+                      ],
+                    ),
+                  ).paddingAll(15),
+                ),
                 Card(
                   child: SizedBox(
                     width: Get.width,
@@ -275,7 +298,70 @@ class SettingsView extends StatelessWidget {
                     ),
                   ).paddingAll(15),
                 ),
-                SizedBox(
+                Card(
+                  child: SizedBox(
+                    width: Get.width,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Show battery',
+                                style: context.textTheme.titleMedium,
+                              ),
+                            ),
+                            Obx(() {
+                              return Switch(
+                                value: settings.value.showBattery,
+                                activeThumbColor: Colors.red,
+                                onChanged: (value) {
+                                  settings.value.showBattery = !settings.value.showBattery;
+                                  SettingsService.save(settings.value);
+                                  settings.refresh();
+                                },
+                              );
+                            })
+                          ],
+                        ),
+                        Obx(() {
+                          return Visibility(
+                            visible: settings.value.showBattery,
+                            child: Column(
+                              children: [
+                                Divider(
+                                  color: Colors.grey[700],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Show battery icon',
+                                        style: context.textTheme.titleMedium,
+                                      ),
+                                    ),
+                                    Obx(() {
+                                      return Switch(
+                                        value: settings.value.showBatteryIcon,
+                                        activeThumbColor: Colors.red,
+                                        onChanged: (value) {
+                                          settings.value.showBatteryIcon = !settings.value.showBatteryIcon;
+                                          SettingsService.save(settings.value);
+                                          settings.refresh();
+                                        },
+                                      );
+                                    })
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ).paddingAll(15),
+                ),
+                const SizedBox(
                   height: 150,
                 )
               ],
