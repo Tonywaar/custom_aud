@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:animated_flip_counter/animated_flip_counter.dart';
@@ -75,7 +76,7 @@ class _HomeViewState extends State<HomeView> {
           final double rangeY = max(0.0, safeMarginY);
 
           _offsetX = (Random().nextDouble() * 2 - 1) * rangeX;
-          _offsetY = (Random().nextDouble() * 2 - 5) * rangeY;
+          _offsetY = (Random().nextDouble() * 2 - 1) * rangeY;
         } else {
           _offsetX = (DateTime.now().second % 10 - 5).toDouble();
           _offsetY = (DateTime.now().microsecond % 10 - 5).toDouble();
@@ -106,6 +107,7 @@ class _HomeViewState extends State<HomeView> {
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: _startHideTimer,
+        onDoubleTap: () => exit(0),
         child: Stack(
           children: [
             Obx(() => Opacity(
@@ -182,17 +184,18 @@ class _HomeViewState extends State<HomeView> {
                               ),
                             );
                           }),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (isCharging) const Icon(CupertinoIcons.bolt, size: 10, color: Colors.white54),
-                              Text(
-                                "${(batteryPercentage * 100).toStringAsFixed(0)}%",
-                                style: context.textTheme.bodySmall?.copyWith(color: Colors.white54),
-                              ),
-                            ],
-                          ),
+                          if (batteryPercentage > 0)
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (isCharging) const Icon(CupertinoIcons.bolt, size: 10, color: Colors.white54),
+                                Text(
+                                  "${(batteryPercentage * 100).toStringAsFixed(0)}%",
+                                  style: context.textTheme.bodySmall?.copyWith(color: Colors.white54),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
