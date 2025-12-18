@@ -40,11 +40,11 @@ Future<void> main() async {
           elevation: 0,
           color: Colors.grey[900],
           surfaceTintColor: Colors.transparent,
-          margin: EdgeInsets.all(15),
+          margin: const EdgeInsets.all(15),
         ),
         appBarTheme: const AppBarTheme(
           scrolledUnderElevation: 0,
-          color: Colors.transparent,
+          backgroundColor: Colors.transparent,
           foregroundColor: Colors.white,
         ),
         dividerColor: Colors.grey[700],

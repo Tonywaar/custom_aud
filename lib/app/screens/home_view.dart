@@ -3,8 +3,11 @@ import 'dart:math';
 
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:custom_aod/app/services/settings_services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../services/battery_services.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -21,6 +24,9 @@ class _HomeViewState extends State<HomeView> {
   double _offsetY = 0;
   bool _showSettings = true;
   Timer? _hideTimer;
+
+  double batteryPercentage = 0.0;
+  bool isCharging = false;
 
   @override
   void initState() {
@@ -62,14 +68,14 @@ class _HomeViewState extends State<HomeView> {
           // Calculate safe bounds based on screen size and clock size
           // We assume the clock area is roughly clockSize*2 wide and clockSize*3.5 tall
           final double safeMarginX = (Get.width / 2) - (settings.value.clockSize * 1.2);
-          final double safeMarginY = (Get.height / 2) - (settings.value.clockSize * 2.0);
+          final double safeMarginY = (Get.height / 2) - (settings.value.clockSize * 2.5);
 
           // Ensure margins are at least 0
           final double rangeX = max(0.0, safeMarginX);
           final double rangeY = max(0.0, safeMarginY);
 
           _offsetX = (Random().nextDouble() * 2 - 1) * rangeX;
-          _offsetY = (Random().nextDouble() * 2 - 1) * rangeY;
+          _offsetY = (Random().nextDouble() * 2 - 5) * rangeY;
         } else {
           _offsetX = (DateTime.now().second % 10 - 5).toDouble();
           _offsetY = (DateTime.now().microsecond % 10 - 5).toDouble();
@@ -82,7 +88,16 @@ class _HomeViewState extends State<HomeView> {
       _currentTimeH = hour12;
       _currentTimeM = now.minute;
       _currentTimeS = now.second;
+
+      if (now.second % 15 == 0) {
+        _updateBatteryInfo();
+      }
     });
+  }
+
+  _updateBatteryInfo() async {
+    batteryPercentage = await BatteryService.getBatteryLevel();
+    isCharging = await BatteryService.isCharging();
   }
 
   @override
@@ -167,6 +182,17 @@ class _HomeViewState extends State<HomeView> {
                               ),
                             );
                           }),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (isCharging) const Icon(CupertinoIcons.bolt, size: 10, color: Colors.white54),
+                              Text(
+                                "${(batteryPercentage * 100).toStringAsFixed(0)}%",
+                                style: context.textTheme.bodySmall?.copyWith(color: Colors.white54),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),

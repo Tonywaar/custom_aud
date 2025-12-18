@@ -15,6 +15,7 @@ dependencies:
   get_storage: 2.1.1
   animated_flip_counter: ^0.3.4
   wakelock_plus: ^1.4.0
+  battery_plus: ^7.0.0
 
 dev_dependencies:
   flutter_test:
